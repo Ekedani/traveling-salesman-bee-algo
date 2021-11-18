@@ -3,7 +3,7 @@
 int **DistanceMatrixGenerator::generateDistanceMatrix(const int VERTICES_NUM) {
     auto distanceMatrix = new int *[VERTICES_NUM];
     for (int i = 0; i < VERTICES_NUM; ++i) {
-        distanceMatrix[i] = new int[VERTICES_NUM];
+        distanceMatrix[i] = new int[VERTICES_NUM]{};
     }
     // Filling matrix
     srand(time(nullptr));
