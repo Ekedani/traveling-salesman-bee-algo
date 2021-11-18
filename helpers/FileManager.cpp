@@ -19,7 +19,7 @@ pair<int **, int> FileManager::readMatrix() {
     int verticesNum;
     file >> verticesNum;
 
-    auto result = new int*[verticesNum];
+    auto result = new int *[verticesNum];
     for (int i = 0; i < verticesNum; ++i) {
         result[i] = new int[verticesNum];
     }
