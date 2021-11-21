@@ -1,9 +1,11 @@
 #include "helpers/DistanceMatrixGenerator.h"
 #include "helpers/FileManager.h"
+#include "algorithm/SolutionTSP.h"
 #include <iostream>
 
 int main() {
     const int VERTICES_NUM = 300;
+    
 
     char choice;
     cout << "Would you like to generate random distances or input them from the file? (R/F)\n";
@@ -17,5 +19,8 @@ int main() {
     }
     cout << "You can see your matrix in the DistanceMatrix.txt file\n";
 
+    SolutionTSP rofl;
+    rofl.generateRandomSolution(300, 300);
+    cout << rofl;
     return 0;
 }

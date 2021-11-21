@@ -3,4 +3,4 @@ project(traveling_salesman_bee_algo)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(traveling_salesman_bee_algo main.cpp helpers/DistanceMatrixGenerator.cpp helpers/DistanceMatrixGenerator.h helpers/FileManager.cpp helpers/FileManager.h)
+add_executable(traveling_salesman_bee_algo main.cpp helpers/DistanceMatrixGenerator.cpp helpers/DistanceMatrixGenerator.h helpers/FileManager.cpp helpers/FileManager.h algorithm/BeeColonyAlgorithm.cpp algorithm/BeeColonyAlgorithm.h algorithm/SolutionTSP.cpp algorithm/SolutionTSP.h)
