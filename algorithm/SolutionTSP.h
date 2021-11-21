@@ -1,6 +1,7 @@
 #include <vector>
 #include <ostream>
 #include <iostream>
+#include <set>
 
 using namespace std;
 
@@ -18,4 +19,7 @@ struct SolutionTSP {
     int calculateSolutionWeight(int **distanceMatrix);
 
     friend std::ostream &operator<<(std::ostream &os, const SolutionTSP &tsp);
+
+    void greedyAlgorithm(int** distanceMatrix, int CITIES_NUM){
+    }
 };

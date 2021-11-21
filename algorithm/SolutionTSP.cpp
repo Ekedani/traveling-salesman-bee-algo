@@ -53,3 +53,5 @@ std::ostream &operator<<(ostream &os, const SolutionTSP &tsp) {
     os << tsp.solution[0] << '\n';
     return os;
 }
+
+

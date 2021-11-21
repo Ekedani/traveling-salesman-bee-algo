@@ -33,10 +33,18 @@ private:
     }
 
 public:
-    BeeColonyAlgorithm(int CITIES_NUM, int **distanceMatrix) {
-        this->CITIES_NUM = CITIES_NUM;
-        this->SOLUTIONS_NUM = 10;
+    BeeColonyAlgorithm(int **distanceMatrix, int CITIES_NUM, int BEE_NUM, float SCOUT_PERCENT, int SOLUTIONS_NUM,
+                       int ITERATIONS_NUM) {
         this->distanceMatrix = distanceMatrix;
+
+        this->BEE_NUM = BEE_NUM;
+        this->SCOUT_NUM = BEE_NUM * SCOUT_PERCENT;
+        this->FORAGER_NUM = BEE_NUM - SCOUT_NUM;
+
+        this->SOLUTIONS_NUM = SOLUTIONS_NUM;
+        this->ITERATIONS_NUM = ITERATIONS_NUM;
+        this->CITIES_NUM = CITIES_NUM;
+
         randomMachine.seed(time(nullptr));
         generateSolutionsList();
         sortSolutions();
@@ -48,8 +56,8 @@ public:
     }
 
     SolutionTSP solve() {
-        for (int i = 0; i < 10000; ++i) {
-            for (int j = 0; j < 10; ++j) {
+        for (int i = 0; i < ITERATIONS_NUM; ++i) {
+            for (int j = 0; j < SCOUT_NUM; ++j) {
                 sendBees(j);
             }
             sortSolutions();
@@ -66,20 +74,20 @@ public:
         });
     }
 
-    void sendBees(int index){
+    void sendBees(int index) {
         SolutionTSP bestNeighbor;
         bestNeighbor.pathLength = INT_MAX;
         for (int i = 0; i < FORAGER_NUM; ++i) {
             auto curNeighbor = solutionsList[index].generateNeighborSolution(randomMachine());
             curNeighbor.calculateSolutionWeight(distanceMatrix);
-            if(curNeighbor.pathLength < bestNeighbor.pathLength){
+            if (curNeighbor.pathLength < bestNeighbor.pathLength) {
                 bestNeighbor = curNeighbor;
             }
         }
-        if(bestNeighbor.pathLength < solutionsList[index].pathLength){
+        if (bestNeighbor.pathLength < solutionsList[index].pathLength) {
             solutionsList[index] = bestNeighbor;
         }
-        if(solutionsList[index].pathLength < bestSolution.pathLength){
+        if (solutionsList[index].pathLength < bestSolution.pathLength) {
             bestSolution = solutionsList[index];
         }
     }
