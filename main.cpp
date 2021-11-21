@@ -22,5 +22,7 @@ int main() {
     SolutionTSP rofl;
     rofl.generateRandomSolution(300, 300);
     cout << rofl;
+    auto notRofl = rofl.generateNeighborSolution(304);
+    cout << notRofl;
     return 0;
 }
