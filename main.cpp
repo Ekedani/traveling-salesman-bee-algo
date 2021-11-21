@@ -20,5 +20,6 @@ int main() {
     cout << "You can see your matrix in the DistanceMatrix.txt file\n";
 
     auto something = BeeColonyAlgorithm(VERTICES_NUM, distanceMatrix);
+    something.solve();
     return 0;
 }

@@ -24,11 +24,10 @@ private:
     SolutionTSP bestSolution;
     vector<SolutionTSP> solutionsList;
 
-    void generateSolutionsList(){
+    void generateSolutionsList() {
         for (int i = 0; i < SOLUTIONS_NUM; ++i) {
-            solutionsList.push_back(SolutionTSP{});
+            solutionsList.emplace_back(SolutionTSP{});
             solutionsList[i].generateRandomSolution(CITIES_NUM, randomMachine());
-            cout << solutionsList[i];
             solutionsList[i].calculateSolutionWeight(distanceMatrix);
         }
     }
@@ -36,13 +35,52 @@ private:
 public:
     BeeColonyAlgorithm(int CITIES_NUM, int **distanceMatrix) {
         this->CITIES_NUM = CITIES_NUM;
+        this->SOLUTIONS_NUM = 10;
         this->distanceMatrix = distanceMatrix;
-        SOLUTIONS_NUM = 10;
         randomMachine.seed(time(nullptr));
         generateSolutionsList();
-        //cout << solutionsList[30];
+        sortSolutions();
+        for (auto solution : solutionsList) {
+            cout << solution.pathLength << '\n';
+        }
+        cout << "Processing...";
+        bestSolution = solutionsList[0];
     }
 
+    SolutionTSP solve() {
+        for (int i = 0; i < 10000; ++i) {
+            for (int j = 0; j < 10; ++j) {
+                sendBees(j);
+            }
+            sortSolutions();
+        }
+        for (auto solution : solutionsList) {
+            cout << solution.pathLength << '\n';
+        }
+        return bestSolution;
+    }
 
+    void sortSolutions() {
+        std::sort(solutionsList.begin(), solutionsList.end(), [](const SolutionTSP &a, const SolutionTSP &b) {
+            return a.pathLength < b.pathLength;
+        });
+    }
 
+    void sendBees(int index){
+        SolutionTSP bestNeighbor;
+        bestNeighbor.pathLength = INT_MAX;
+        for (int i = 0; i < FORAGER_NUM; ++i) {
+            auto curNeighbor = solutionsList[index].generateNeighborSolution(randomMachine());
+            curNeighbor.calculateSolutionWeight(distanceMatrix);
+            if(curNeighbor.pathLength < bestNeighbor.pathLength){
+                bestNeighbor = curNeighbor;
+            }
+        }
+        if(bestNeighbor.pathLength < solutionsList[index].pathLength){
+            solutionsList[index] = bestNeighbor;
+        }
+        if(solutionsList[index].pathLength < bestSolution.pathLength){
+            bestSolution = solutionsList[index];
+        }
+    }
 };
