@@ -1,6 +1,6 @@
 #include "helpers/DistanceMatrixGenerator.h"
 #include "helpers/FileManager.h"
-#include "algorithm/SolutionTSP.h"
+#include "algorithm/BeeColonyAlgorithm.h"
 #include <iostream>
 
 int main() {
@@ -19,10 +19,6 @@ int main() {
     }
     cout << "You can see your matrix in the DistanceMatrix.txt file\n";
 
-    SolutionTSP rofl;
-    rofl.generateRandomSolution(300, 300);
-    cout << rofl;
-    auto notRofl = rofl.generateNeighborSolution(304);
-    cout << notRofl;
+    auto something = BeeColonyAlgorithm(VERTICES_NUM, distanceMatrix);
     return 0;
 }

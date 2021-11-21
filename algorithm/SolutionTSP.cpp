@@ -1,7 +1,3 @@
-//
-// Created by User on 21.11.2021.
-//
-
 #include "SolutionTSP.h"
 
 void SolutionTSP::generateRandomSolution(int CITIES_NUM, int RANDOM_SEED) {
@@ -41,7 +37,7 @@ int SolutionTSP::calculateSolutionWeight(int **distanceMatrix) {
         weight += distanceMatrix[solution[i]][solution[i + 1]];
     }
     // Get back to the start of the path
-    weight += distanceMatrix[solution[solution.size()]][0];
+    weight += distanceMatrix[solution[solution.size() - 1]][0];
     pathLength = weight;
     return weight;
 }

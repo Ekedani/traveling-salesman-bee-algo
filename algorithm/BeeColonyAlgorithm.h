@@ -1,5 +1,8 @@
+#include "SolutionTSP.h"
 #include <random>
+#include <ctime>
 #include <utility>
+#include <iostream>
 
 using namespace std;
 
@@ -18,18 +21,28 @@ private:
     mt19937 randomMachine;
 
     //Best solution at the moment
-    vector<int> bestSolution;
-    int bestSolutionWeight;
+    SolutionTSP bestSolution;
+    vector<SolutionTSP> solutionsList;
 
-
-
-    vector<int> generateRandomSolution(){
-
+    void generateSolutionsList(){
+        for (int i = 0; i < SOLUTIONS_NUM; ++i) {
+            solutionsList.push_back(SolutionTSP{});
+            solutionsList[i].generateRandomSolution(CITIES_NUM, randomMachine());
+            cout << solutionsList[i];
+            solutionsList[i].calculateSolutionWeight(distanceMatrix);
+        }
     }
 
 public:
-    /*BeeColonyAlgorithm() {
+    BeeColonyAlgorithm(int CITIES_NUM, int **distanceMatrix) {
+        this->CITIES_NUM = CITIES_NUM;
+        this->distanceMatrix = distanceMatrix;
+        SOLUTIONS_NUM = 10;
+        randomMachine.seed(time(nullptr));
+        generateSolutionsList();
+        //cout << solutionsList[30];
+    }
 
-    }*/
+
 
 };
