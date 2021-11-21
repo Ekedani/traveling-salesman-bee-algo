@@ -24,13 +24,7 @@ private:
     SolutionTSP bestSolution;
     vector<SolutionTSP> solutionsList;
 
-    void generateSolutionsList() {
-        for (int i = 0; i < SOLUTIONS_NUM; ++i) {
-            solutionsList.emplace_back(SolutionTSP{});
-            solutionsList[i].generateRandomSolution(CITIES_NUM, randomMachine());
-            solutionsList[i].calculateSolutionWeight(distanceMatrix);
-        }
-    }
+    void generateSolutionsList();
 
 public:
     BeeColonyAlgorithm(int **distanceMatrix, int CITIES_NUM, int BEE_NUM, float SCOUT_PERCENT, int SOLUTIONS_NUM,
@@ -48,31 +42,26 @@ public:
         randomMachine.seed(time(nullptr));
         generateSolutionsList();
         sortSolutions();
-        for (auto solution : solutionsList) {
-            cout << solution.pathLength << '\n';
-        }
-        cout << "Processing...";
         bestSolution = solutionsList[0];
     }
 
     SolutionTSP solve() {
         for (int i = 0; i < ITERATIONS_NUM; ++i) {
-            for (int j = 0; j < SCOUT_NUM; ++j) {
+            if(i % 40 == 0 || i == ITERATIONS_NUM){
+                cout << "Best solution on iteration #" << i << ": " << bestSolution.pathLength << '\n';
+            }
+            for (int j = 0; j < SCOUT_NUM / 2; ++j) {
                 sendBees(j);
             }
+            for (int j = 0; j < SCOUT_NUM - SCOUT_NUM / 2; ++j) {
+                sendBees(randomMachine() % SOLUTIONS_NUM);
+            }
             sortSolutions();
-        }
-        for (auto solution : solutionsList) {
-            cout << solution.pathLength << '\n';
         }
         return bestSolution;
     }
 
-    void sortSolutions() {
-        std::sort(solutionsList.begin(), solutionsList.end(), [](const SolutionTSP &a, const SolutionTSP &b) {
-            return a.pathLength < b.pathLength;
-        });
-    }
+    void sortSolutions();
 
     void sendBees(int index) {
         SolutionTSP bestNeighbor;

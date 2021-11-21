@@ -6,9 +6,9 @@
 int main() {
     const int CITIES_NUM = 300;
     const int BEES_NUM = 200;
-    const float SCOUT_PERCENT = 0.1;
-    const int SOLUTIONS_NUM = 300;
-    const int ITERATIONS_NUM = 250;
+    const float SCOUT_PERCENT = 0.15;
+    const int SOLUTIONS_NUM = 400;
+    const int ITERATIONS_NUM = 10000;
 
     char choice;
     cout << "Would you like to generate random distances or input them from the file? (R/F)\n";
@@ -25,5 +25,6 @@ int main() {
     auto something = BeeColonyAlgorithm(distanceMatrix, CITIES_NUM, BEES_NUM, SCOUT_PERCENT, SOLUTIONS_NUM,
                                         ITERATIONS_NUM);
     something.solve();
+
     return 0;
 }
