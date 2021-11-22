@@ -4,11 +4,14 @@
 #include <iostream>
 
 int main() {
+    //Parameters to experiment with algorithm
     const int CITIES_NUM = 300;
     const int BEES_NUM = 100;
     const float SCOUT_PERCENT = 0.1;
     const int SOLUTIONS_NUM = 100;
     const int ITERATIONS_NUM = 1000;
+    const float MISTAKE_PROB = 0.1;
+
     bool startIsGreedy = false;
 
     char choice;
@@ -24,7 +27,7 @@ int main() {
     cout << "You can see your matrix in the DistanceMatrix.txt file\n";
 
     auto something = BeeColonyAlgorithm(distanceMatrix, CITIES_NUM, BEES_NUM, SCOUT_PERCENT, SOLUTIONS_NUM,
-                                        ITERATIONS_NUM, startIsGreedy);
+                                        ITERATIONS_NUM, MISTAKE_PROB, startIsGreedy);
     something.startAlgorithm();
     return 0;
 }

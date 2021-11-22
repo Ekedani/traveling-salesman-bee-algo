@@ -21,6 +21,8 @@ private:
     int **distanceMatrix;
     mt19937 randomMachine;
 
+    float MISTAKE_PROB;
+
     //Best solution at the moment
     SolutionTSP bestSolution;
     vector<SolutionTSP> solutionsList;
@@ -35,7 +37,7 @@ private:
 
 public:
     BeeColonyAlgorithm(int **distanceMatrix, int CITIES_NUM, int BEE_NUM, float SCOUT_PERCENT, int SOLUTIONS_NUM,
-                       int ITERATIONS_NUM, bool startIsGreedy) {
+                       int ITERATIONS_NUM, float MISTAKE_PROB, bool startIsGreedy) {
         this->distanceMatrix = distanceMatrix;
 
         this->BEE_NUM = BEE_NUM;
@@ -46,6 +48,7 @@ public:
         this->ITERATIONS_NUM = ITERATIONS_NUM;
         this->CITIES_NUM = CITIES_NUM;
 
+        this->MISTAKE_PROB = MISTAKE_PROB;
         this->startIsGreedy = startIsGreedy;
 
         randomMachine.seed(time(nullptr));
@@ -87,7 +90,7 @@ public:
             }
         }
 
-        if (bestNeighbor.pathLength < solutionsList[index].pathLength) {
+        if (bestNeighbor.pathLength < solutionsList[index].pathLength && MISTAKE_PROB < generateProbability()) {
             solutionsList[index] = bestNeighbor;
         }
 
