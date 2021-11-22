@@ -7,11 +7,11 @@ int main() {
     const int CITIES_NUM = 300;
     const int BEES_NUM = 100;
     const float SCOUT_PERCENT = 0.1;
-    const int SOLUTIONS_NUM = 10;
-    const int ITERATIONS_NUM = 1000;
+    const int SOLUTIONS_NUM = 50;
+    const int ITERATIONS_NUM = 500;
     const float MISTAKE_PROB = 0.1;
 
-    bool startIsGreedy = true;
+    bool startIsGreedy = false;
 
     char choice;
     cout << "Would you like to generate random distances or input them from the file? (R/F)\n";

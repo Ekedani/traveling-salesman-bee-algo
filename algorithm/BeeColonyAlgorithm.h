@@ -64,23 +64,24 @@ public:
     SolutionTSP startAlgorithm() {
         ofstream stats;
         stats.open(R"(D:\Programming\traveling-salesman-bee-algo\helpers\LastRunStats.csv)");
-        stats << "Iteration;Function Value\n";
+        stats << "Iteration;Function Value\n" << 0 << ';' << bestSolution.pathLength << '\n';
+        cout << "Start solution length: " << bestSolution.pathLength << '\n';
         for (int i = 0; i < ITERATIONS_NUM; ++i) {
             set<int> visitedSolutions;
             int localBestSolution = 0;
             int scoutsSent = 0;
-            while(scoutsSent != SCOUT_NUM && scoutsSent != SOLUTIONS_NUM){
+            while (scoutsSent != SCOUT_NUM && scoutsSent != SOLUTIONS_NUM) {
                 auto probRandom = generateProbability();
-                if(probRandom < PROB_RANDOM){
+                if (probRandom < PROB_RANDOM) {
                     // Send to random solution
                     int idx = randomMachine() % SOLUTIONS_NUM;
-                    if(visitedSolutions.contains(idx)){
+                    if (visitedSolutions.contains(idx)) {
                         continue;
                     }
                     visitedSolutions.insert(idx);
                     sendBees(idx);
-                } else{
-                    if(visitedSolutions.contains(localBestSolution)){
+                } else {
+                    if (visitedSolutions.contains(localBestSolution)) {
                         localBestSolution++;
                         continue;
                     }
@@ -92,15 +93,12 @@ public:
             }
             sortSolutions();
 
-            if (i % 20 == 0 || i == ITERATIONS_NUM) {
-                cout << "Best solution on iteration #" << i << ": " << bestSolution.pathLength << '\n';
-                stats << i << ';' << bestSolution.pathLength << '\n';
+            if ((i + 1) % 10 == 0 || i == ITERATIONS_NUM) {
+                cout << "Best solution on iteration #" << i + 1 << ": " << bestSolution.pathLength << '\n';
+                stats << i + 1 << ';' << bestSolution.pathLength << '\n';
             }
         }
         stats.close();
-        for (const auto& obj : solutionsList) {
-            cout << obj.pathLength << '\n';
-        }
         return bestSolution;
     }
 
@@ -119,7 +117,7 @@ public:
         if (bestNeighbor.pathLength < solutionsList[index].pathLength && MISTAKE_PROB < generateProbability()) {
             solutionsList[index] = bestNeighbor;
             uselessVisitsNums[index] = 0;
-        }else{
+        } else {
             uselessVisitsNums[index]++;
         }
 
