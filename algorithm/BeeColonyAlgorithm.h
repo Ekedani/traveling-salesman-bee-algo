@@ -22,10 +22,13 @@ private:
     mt19937 randomMachine;
 
     float MISTAKE_PROB;
+    // Changing that parameter isn't necessary
+    constexpr static const float PROB_RANDOM = 0.4;
 
     //Best solution at the moment
     SolutionTSP bestSolution;
     vector<SolutionTSP> solutionsList;
+    vector<int> uselessVisitsNums;
     bool startIsGreedy;
 
     //Initialize solutions to work with
@@ -53,6 +56,7 @@ public:
 
         randomMachine.seed(time(nullptr));
         generateSolutionsList();
+        this->uselessVisitsNums = vector(CITIES_NUM, 0);
         sortSolutions();
         bestSolution = solutionsList[0];
     }
@@ -62,19 +66,41 @@ public:
         stats.open(R"(D:\Programming\traveling-salesman-bee-algo\helpers\LastRunStats.csv)");
         stats << "Iteration;Function Value\n";
         for (int i = 0; i < ITERATIONS_NUM; ++i) {
+            set<int> visitedSolutions;
+            int localBestSolution = 0;
+            int scoutsSent = 0;
+            while(scoutsSent != SCOUT_NUM && scoutsSent != SOLUTIONS_NUM){
+                auto probRandom = generateProbability();
+                if(probRandom < PROB_RANDOM){
+                    // Send to random solution
+                    int idx = randomMachine() % SOLUTIONS_NUM;
+                    if(visitedSolutions.contains(idx)){
+                        continue;
+                    }
+                    visitedSolutions.insert(idx);
+                    sendBees(idx);
+                } else{
+                    if(visitedSolutions.contains(localBestSolution)){
+                        localBestSolution++;
+                        continue;
+                    }
+                    visitedSolutions.insert(localBestSolution);
+                    sendBees(localBestSolution);
+                    localBestSolution++;
+                }
+                scoutsSent++;
+            }
+            sortSolutions();
+
             if (i % 20 == 0 || i == ITERATIONS_NUM) {
                 cout << "Best solution on iteration #" << i << ": " << bestSolution.pathLength << '\n';
                 stats << i << ';' << bestSolution.pathLength << '\n';
             }
-            for (int j = 0; j < SCOUT_NUM / 2; ++j) {
-                sendBees(j);
-            }
-            for (int j = 0; j < SCOUT_NUM - SCOUT_NUM / 2; ++j) {
-                sendBees(randomMachine() % SOLUTIONS_NUM);
-            }
-            sortSolutions();
         }
         stats.close();
+        for (const auto& obj : solutionsList) {
+            cout << obj.pathLength << '\n';
+        }
         return bestSolution;
     }
 
@@ -92,6 +118,9 @@ public:
 
         if (bestNeighbor.pathLength < solutionsList[index].pathLength && MISTAKE_PROB < generateProbability()) {
             solutionsList[index] = bestNeighbor;
+            uselessVisitsNums[index] = 0;
+        }else{
+            uselessVisitsNums[index]++;
         }
 
         if (solutionsList[index].pathLength < bestSolution.pathLength) {
