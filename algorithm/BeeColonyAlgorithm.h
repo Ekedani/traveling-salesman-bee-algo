@@ -28,7 +28,6 @@ private:
     //Best solution at the moment
     SolutionTSP bestSolution;
     vector<SolutionTSP> solutionsList;
-    vector<int> uselessVisitsNums;
     bool startIsGreedy;
 
     //Initialize solutions to work with
@@ -56,7 +55,6 @@ public:
 
         randomMachine.seed(time(nullptr));
         generateSolutionsList();
-        this->uselessVisitsNums = vector(CITIES_NUM, 0);
         sortSolutions();
         bestSolution = solutionsList[0];
     }
@@ -116,11 +114,7 @@ public:
 
         if (bestNeighbor.pathLength < solutionsList[index].pathLength && MISTAKE_PROB < generateProbability()) {
             solutionsList[index] = bestNeighbor;
-            uselessVisitsNums[index] = 0;
-        } else {
-            uselessVisitsNums[index]++;
         }
-
         if (solutionsList[index].pathLength < bestSolution.pathLength) {
             bestSolution = solutionsList[index];
         }
