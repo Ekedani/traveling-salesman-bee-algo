@@ -5,7 +5,7 @@
 int main() {
     //Parameters to experiment with algorithm
     const int CITIES_NUM = 300;
-    const int BEES_NUM = 1000;
+    const int BEES_NUM = 100;
     const float SCOUT_PERCENT = 0.1;
     const int SOLUTIONS_NUM = 1000;
     const int ITERATIONS_NUM = 1000;
